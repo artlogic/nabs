@@ -38,12 +38,14 @@ This will create three entries in `package.json`:
 
 Parent tasks run their subtasks in alphabetical order.
 
+Because colon is used as the task separator, you probably should avoid embedding colons in your nabs task names. It's also a good idea to avoid starting task names with a period. See [Depenendcies](#dependencies) below.
+
 ## Multi-action tasks
 
 You can create a multi-action task by embedding a sequence as the mapping's value:
 
 ```yaml
-publish:
+publish-spec:
   - git checkout gh-pages
   - mv spec.html index.html
   - git add index.html
@@ -56,7 +58,7 @@ This will create a `package.json` entry like this:
 
 ```json
 "scripts": {
-  "publish": "git checkout gh-pages && mv spec.html index.html && git add index.html && git commit -m 'Publishing...' && git push && git checkout master"
+  "publish-spec": "git checkout gh-pages && mv spec.html index.html && git add index.html && git commit -m 'Publishing...' && git push && git checkout master"
 }
 ```
 
@@ -64,12 +66,33 @@ If any individual action fails, the entire task will fail.
 
 ## Dependencies
 
-Any task can have dependencies that must be run prior to execution. They can be specified by setting the value of the task to a mapping with a `depend` property and an `action` property.
+Any task can have dependencies that must be run prior to execution. They can be specified by setting the value of the task to a mapping with a `.depend` property and an `.action` property. The `.action` property contains either a single action (a string) or a list of actions (sequence). The `.depend` property contains a sequence of task names that must be run prior to this task.
 
-More TBD.
+```yaml
+spec:
+  generate: jsdoc -c .jsdocrc
+  publish:
+    .depend: [spec:generate]
+    .action:
+      - rm prod
+      - mv out prod
+```
+
+The above will generate the following `package.json` entries:
+
+```json
+"scripts": {
+  "spec": "npm run spec:publish",
+  "spec:generate": "jsdoc -c .jsdocrc",
+  "spec:publish": "npm run spec:generate && rm prod && mv out prod"
+}
+```
+
+Notice that nabs is smart enough to know that running `spec:publish` will run `spec:generate` and so it's not run twice by the `spec` task.
 
 ## Future enhancements
 
+* Sometimes a hierarchy is just a set of related tasks (migrate, migrate:create, etc...), not a set of dependent tasks. Can we support both? Probably, using `.action` and `.depend` on non-leaf nodes - write those docs!
 * Ignore action errors (use `;` instead of `&&` for certain tasks)... end with `; true` if neccesary (won't work on windows).
 * Info/warning messages when using npm's special names (e.g. publish, install, uninstall, version, and all variations).
 * Platform independence? (https://github.com/shelljs/shx, https://www.npmjs.com/package/bashful)
@@ -78,6 +101,7 @@ More TBD.
 * Explicit support for pre/post hooks?
 * Support for watching files/folders and kicking off tasks (nodemon, onchange).
 * Support for parallel tasks (parallelshell).
+* Reusable actions?
 
 ## References/inspiration
 
