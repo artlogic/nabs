@@ -1,0 +1,30 @@
+{
+  "name": "nabs",
+  "version": "0.1.0",
+  "description": "Not Another Build System - compiles YAML to scripts in package.json",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/artlogic/nabs.git"
+  },
+  "keywords": [
+    "build",
+    "system",
+    "make",
+    "tool",
+    "task",
+    "cli"
+  ],
+  "author": "James Kruth <james@kruth.org>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/artlogic/nabs/issues"
+  },
+  "homepage": "https://github.com/artlogic/nabs#readme",
+  "dependencies": {
+    "js-yaml": "^3.6.1"
+  }
+}
