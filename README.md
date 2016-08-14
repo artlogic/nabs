@@ -2,7 +2,7 @@
 
 nabs is a compiler that turns a nicely structured YAML file into script entries in your `package.json`. npm is a great minimal task runner that's already installed along with node. However, a large number of multi-action tasks in your `package.json` can be hard to manage. That's where nabs comes in. You can write your tasks in much easier to manage format and then compile them into standard script entries.
 
-Note: nabs currently only works in Bourne shell compatible environments.
+Note: nabs is only designed to work in Bourne shell compatible environments.
 
 ## Basic format
 
@@ -18,7 +18,7 @@ The key is the task name, the value is a shell command to run. This is already a
 
 ## Nested tasks
 
-Actions can be nested, creating a hierarchy. Only leaves in the hierarchy can have action values. Nested action names will be separated by colons in `package.json`.
+Actions can be nested, creating a hierarchy. Only leaves in the hierarchy can have action values (unless you [override the defaults](#overriding-defaults)). Nested action names will be separated by colons in `package.json`.
 
 ```yaml
 test:
@@ -38,7 +38,7 @@ This will create three entries in `package.json`:
 
 Parent tasks run their subtasks in alphabetical order.
 
-Because colon is used as the task separator, you probably should avoid embedding colons in your nabs task names. It's also a good idea to avoid starting task names with a period. See [Depenendcies](#dependencies) below.
+Because colon is used as the task separator, you probably should avoid embedding colons in your nabs task names. It's also a good idea to avoid starting task names with a period. See [Dependencies](#dependencies) below.
 
 ## Multi-action tasks
 
@@ -90,10 +90,33 @@ The above will generate the following `package.json` entries:
 
 Notice that nabs is smart enough to know that running `spec:publish` will run `spec:generate` and so it's not run twice by the `spec` task.
 
+## Overriding defaults
+
+Parent tasks in a hierarchy have a default set of dependencies - namely, their children in alphabetical order. This can be overridden by setting the `.depend` property on the parent to any valid sequence of tasks, including the empty sequence.
+
+Generally the `.action` property on parent tasks is empty. It's possible to set this as well if desired. This is useful when you'd like to use parent tasks to group related tasks that shouldn't neccesarily exhibit the default parent/child relationship. For example:
+
+```yaml
+migrate:
+  .depend: []
+  .action: sequelize db:migrate
+  create: sequelize migration:create
+  undo: sequelize db:migrate:undo
+```
+
+This will create a `package.json` with the following entries:
+
+```json
+"scripts": {
+  "migrate:create": "sequelize migration:create",
+  "migrate:undo": "sequelize db:migrate:undo",
+  "migrate": "sequelize db:migrate"
+}
+```
+
 ## Future enhancements
 
-* Sometimes a hierarchy is just a set of related tasks (migrate, migrate:create, etc...), not a set of dependent tasks. Can we support both? Probably, using `.action` and `.depend` on non-leaf nodes - write those docs!
-* Ignore action errors (use `;` instead of `&&` for certain tasks)... end with `; true` if neccesary (won't work on windows).
+* Ignore action errors (use `;` instead of `&&` for certain tasks)... end with `; true` if necessary (won't work on windows).
 * Info/warning messages when using npm's special names (e.g. publish, install, uninstall, version, and all variations).
 * Platform independence? (https://github.com/shelljs/shx, https://www.npmjs.com/package/bashful)
 * Allow actions to be embedded JS snippets as an alternative to shell commands. They might be output into `./scripts`.
