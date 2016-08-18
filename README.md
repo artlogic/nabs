@@ -66,14 +66,14 @@ If any individual action fails, the entire task will fail.
 
 ## Dependencies
 
-Any task can have dependencies that must be run prior to execution. They can be specified by setting the value of the task to a mapping with a `.depend` property and an `.action` property. The `.action` property contains either a single action (a string) or a list of actions (sequence). The `.depend` property contains a sequence of task names that must be run prior to this task.
+Any task can have dependencies that must be run prior to execution. They can be specified by setting the value of the task to a mapping with a `$depend` property and an `$action` property. The `$action` property contains either a single action (a string) or a list of actions (sequence). The `$depend` property contains a sequence of task names that must be run prior to this task.
 
 ```yaml
 spec:
   generate: jsdoc -c .jsdocrc
   publish:
-    .depend: [spec:generate]
-    .action:
+    $depend: [spec:generate]
+    $action:
       - rm prod
       - mv out prod
 ```
@@ -92,14 +92,14 @@ Notice that nabs is smart enough to know that running `spec:publish` will run `s
 
 ## Overriding defaults
 
-Parent tasks in a hierarchy have a default set of dependencies - namely, their children in alphabetical order. This can be overridden by setting the `.depend` property on the parent to any valid sequence of tasks, including the empty sequence.
+Parent tasks in a hierarchy have a default set of dependencies - namely, their children in alphabetical order. This can be overridden by setting the `$depend` property on the parent to any valid sequence of tasks, including the empty sequence.
 
-Generally the `.action` property on parent tasks is empty. It's possible to set this as well if desired. This is useful when you'd like to use parent tasks to group related tasks that shouldn't neccesarily exhibit the default parent/child relationship. For example:
+Generally the `$action` property on parent tasks is empty. It's possible to set this as well if desired. This is useful when you'd like to use parent tasks to group related tasks that shouldn't neccesarily exhibit the default parent/child relationship. For example:
 
 ```yaml
 migrate:
-  .depend: []
-  .action: sequelize db:migrate
+  $depend: []
+  $action: sequelize db:migrate
   create: sequelize migration:create
   undo: sequelize db:migrate:undo
 ```
