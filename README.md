@@ -116,6 +116,7 @@ This will create a `package.json` with the following entries:
 
 ## Future enhancements
 
+* Write some usage instructions (probably just `nabs` in your project dir)
 * Ignore action errors (use `;` instead of `&&` for certain tasks)... end with `; true` if necessary (won't work on windows).
 * Info/warning messages when using npm's special names (e.g. publish, install, uninstall, version, and all variations).
 * Platform independence? (https://github.com/shelljs/shx, https://www.npmjs.com/package/bashful)
@@ -125,6 +126,7 @@ This will create a `package.json` with the following entries:
 * Support for watching files/folders and kicking off tasks (nodemon, onchange).
 * Support for parallel tasks (parallelshell).
 * Reusable actions?
+* Consider allowing nabs to run a task after compilation: `nabs migrate:create --name 'test-migrate'` which would just execute: `npm run migrate:create -- --name 'test-migrate'`.
 
 ## References/inspiration
 
