@@ -2,7 +2,7 @@
 
 nabs is a compiler that turns a nicely structured YAML file into script entries in your `package.json`. npm is a great minimal task runner that's already installed along with node. However, a large number of multi-action tasks in your `package.json` can be hard to manage. That's where nabs comes in. You can write your tasks in much easier to manage format and then compile them into standard script entries.
 
-Note: nabs is only designed to work in Bourne shell compatible environments.
+Note: nabs is only designed to work in Bourne shell compatible environments. It's only been tested (thus far) with Node 4.x.
 
 ## Basic format
 
@@ -127,6 +127,7 @@ This will create a `package.json` with the following entries:
 * Support for parallel tasks (parallelshell).
 * Reusable actions?
 * Consider allowing nabs to run a task after compilation: `nabs migrate:create --name 'test-migrate'` which would just execute: `npm run migrate:create -- --name 'test-migrate'`.
+* Consider an option to automatically place a nabs task in scripts that just recompiles the scripts: `"nabs": "nabs"`.
 
 ## References/inspiration
 
