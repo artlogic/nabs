@@ -128,6 +128,7 @@ This will create a `package.json` with the following entries:
 * Reusable actions?
 * Consider allowing nabs to run a task after compilation: `nabs migrate:create --name 'test-migrate'` which would just execute: `npm run migrate:create -- --name 'test-migrate'`.
 * Consider an option to automatically place a nabs task in scripts that just recompiles the scripts: `"nabs": "nabs"`.
+* If a custom dependency name isn't prefixed, assume it's a child of the current item (requires a change... how to deal with top level items?)
 
 ## References/inspiration
 
