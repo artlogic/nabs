@@ -35,5 +35,11 @@
     "eslint-plugin-import": "^1.13.0",
     "eslint-plugin-jsx-a11y": "^2.1.0",
     "eslint-plugin-react": "^6.1.2"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "bin": {
+    "nabs": "./index.js"
   }
 }
