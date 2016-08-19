@@ -14,7 +14,7 @@ lint: eslint .
 minify: uglifyjs js/main.js -o js/main.min.js
 ```
 
-The key is the task name, the value is a shell command to run. This is already a slight improvement over `package.json` because you can add comments and generally omit quotes.
+The key is the task name, the value is a shell command to run. This is already a slight improvement over `package.json` because you can add comments and generally omit quotes. Task names starting with `$` are reserved for use by nabs.
 
 ## Nested tasks
 
