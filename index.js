@@ -69,8 +69,7 @@ function main() {
   const tasks = yaml.safeLoad(fs.readFileSync('nabs.yml', 'utf8'));
   const pkg = jsonfile.readFileSync('package.json', 'utf8');
 
-  // TODO: change to scripts
-  pkg.nabs = buildScripts(tasks);
+  pkg.scripts = buildScripts(tasks);
 
   jsonfile.writeFileSync('package.json', pkg, {
     encoding: 'utf8',
