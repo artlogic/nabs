@@ -4,9 +4,21 @@ nabs is a compiler that turns a nicely structured YAML file into script entries 
 
 Note: nabs is only designed to work in Bourne shell compatible environments. It's only been tested (thus far) with Node 4.x.
 
+## Getting Started
+
+Start by installing nabs:
+
+`npm install -g nabs`
+
+Then, create a `nabs.yml` (see below) along side your `package.json` and execute:
+
+`nabs`
+
+You should see your tasks represented as script entries in `package.json`
+
 ## Basic format
 
-Start by putting a `nabs.yml` in the same directory as your `package.json`. The document is a mapping (dictionary) of tasks:
+`nabs.yml` is a mapping (dictionary) of task names to actions:
 
 ```yaml
 # my tasks
@@ -36,9 +48,9 @@ This will create three entries in `package.json`:
 }
 ```
 
-Parent tasks run their subtasks in alphabetical order.
+Parent tasks run their subtasks in alphabetical order. It is possible to [override](#overiding-defaults) that behavior.
 
-Because colon is used as the task separator, you probably should avoid embedding colons in your nabs task names. It's also a good idea to avoid starting task names with a period. See [Dependencies](#dependencies) below.
+Note: Because colon is used as the task separator, you probably should avoid embedding colons in your nabs task names.
 
 ## Multi-action tasks
 
@@ -82,13 +94,13 @@ The above will generate the following `package.json` entries:
 
 ```json
 "scripts": {
-  "spec": "npm run spec:publish",
+  "spec": "npm run spec:generate && npm run spec:publish",
   "spec:generate": "jsdoc -c .jsdocrc",
   "spec:publish": "npm run spec:generate && rm prod && mv out prod"
 }
 ```
 
-In the future, nabs will be smart enough to know that running `spec:publish` will run `spec:generate` and so it's not run twice by the `spec` task.
+In the future, nabs will be smart enough to know that running `spec:publish` will run `spec:generate` so it's not run twice by the `spec` task.
 
 ## Overriding defaults
 
@@ -114,11 +126,60 @@ This will create a `package.json` with the following entries:
 }
 ```
 
+### Child task shorthand
+
+One potential use of `$depend` is to override the default alphabetical order parents tasks run their child in. In this case, shorthand can be used to write the task names that omits the parent name:
+
+```yaml
+test:
+  $depend:
+    - :server  # instead of test:server
+    - :client  # instead of test:client
+
+  server: mocha --recursive test/server
+  client: mocha --recursive test/client
+```
+
+This will generate the following script entries:
+
+```json
+"scripts": {
+  "test": "npm run test:server && npm run test:client",
+  "test:server": "mocha --recursive test/server",
+  "test:client": "mocha --recursive test/client"
+}
+```
+
+A leading colon in a `$depend` task name will always be replaced by the full name of the parent, even in deeply nested tasks. For instance:
+
+```yaml
+very:
+  deep:
+    task:
+      $depend: [:server, :client]
+      server: echo "first!"
+      client: echo "second!"
+```
+
+Compiles to:
+
+```json
+"scripts": {
+  "very": "npm run very:deep",
+  "very:deep": "npm run very:deep:task",
+  "very:deep:task": "npm run very:deep:task:server && npm run very:deep:task:client",
+  "very:deep:task:server": "echo \"first!\"",
+  "very:deep:task:client": "echo \"second!\""
+}
+```
+
+Notice that `:server` becomes `very:deep:task:server`.
+
 ## Future enhancements
 
-* Write some usage instructions (probably just `nabs` in your project dir)
+* Look for dependency loops and duplicate calls.
 * Ignore action errors (use `;` instead of `&&` for certain tasks)... end with `; true` if necessary (won't work on windows).
-* Info/warning messages when using npm's special names (e.g. publish, install, uninstall, version, and all variations).
+* Info/warning messages when using npm's special names (e.g. publish, install, uninstall, version, and all variations). (Use winston?)
 * Platform independence? (https://github.com/shelljs/shx, https://www.npmjs.com/package/bashful)
 * Allow actions to be embedded JS snippets as an alternative to shell commands. They might be output into `./scripts`.
 * File based tasks - that is, operate on all .js files... Need to be able to ignore dirs globally, and on case by case... Look at grunt for this. Any set of params should compile to a find command.
@@ -128,7 +189,11 @@ This will create a `package.json` with the following entries:
 * Reusable actions?
 * Consider allowing nabs to run a task after compilation: `nabs migrate:create --name 'test-migrate'` which would just execute: `npm run migrate:create -- --name 'test-migrate'`.
 * Consider an option to automatically place a nabs task in scripts that just recompiles the scripts: `"nabs": "nabs"`.
-* If a custom dependency name isn't prefixed, assume it's a child of the current item (requires a change... how to deal with top level items?)
+* Command line options:
+  * Specify location/name of task source file
+  * Specify location/name of scripts destination file
+  * Verbose mode
+
 
 ## References/inspiration
 
