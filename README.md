@@ -194,7 +194,6 @@ Notice that `:server` becomes `very:deep:task:server`.
   * Specify location/name of scripts destination file
   * Verbose mode
 
-
 ## References/inspiration
 
 * https://docs.npmjs.com/misc/scripts
