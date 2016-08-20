@@ -25,10 +25,19 @@ function buildScripts(tasks, prefix) {
     if (prefix) {
       // custom dependencies
       if (Array.isArray(tasks.$depend)) {
-        scripts[prefix] = tasks.$depend.map((key) => `npm run ${key}`)
-          .join(' && ');
+        scripts[prefix] = tasks.$depend.map((key) => {
+          if (key.startsWith(':')) {
+            return `npm run ${prefix}${key}`;
+          }
+
+          return `npm run ${key}`;
+        }).join(' && ');
       } else if (typeof tasks.$depend === 'string') {
-        scripts[prefix] = `npm run ${tasks.$depend}`;
+        if (tasks.$depend.startsWith(':')) {
+          scripts[prefix] = `npm run ${prefix}${tasks.$depend}`;
+        } else {
+          scripts[prefix] = `npm run ${tasks.$depend}`;
+        }
       } else if (tasks.$depend === null) {
         scripts[prefix] = '';
       } else {
