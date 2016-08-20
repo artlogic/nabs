@@ -177,9 +177,15 @@ Notice that `:server` becomes `very:deep:task:server`.
 
 ## Future enhancements
 
+* Info/warning messages when using npm's special names (e.g. publish, install, uninstall, version, and all variations). (Use winston?)
+* Consider allowing nabs to run a task after compilation: `nabs migrate:create --name 'test-migrate'` which would just execute: `npm run migrate:create -- --name 'test-migrate'`.
+* Consider an option to automatically place a nabs task in scripts that just recompiles the scripts: `"nabs": "nabs"`.
+* Command line options:
+  * Specify location/name of task source file
+  * Specify location/name of scripts destination file
+  * Verbose mode
 * Look for dependency loops and duplicate calls.
 * Ignore action errors (use `;` instead of `&&` for certain tasks)... end with `; true` if necessary (won't work on windows).
-* Info/warning messages when using npm's special names (e.g. publish, install, uninstall, version, and all variations). (Use winston?)
 * Platform independence? (https://github.com/shelljs/shx, https://www.npmjs.com/package/bashful)
 * Allow actions to be embedded JS snippets as an alternative to shell commands. They might be output into `./scripts`.
 * File based tasks - that is, operate on all .js files... Need to be able to ignore dirs globally, and on case by case... Look at grunt for this. Any set of params should compile to a find command.
@@ -187,12 +193,6 @@ Notice that `:server` becomes `very:deep:task:server`.
 * Support for watching files/folders and kicking off tasks (nodemon, onchange).
 * Support for parallel tasks (parallelshell).
 * Reusable actions?
-* Consider allowing nabs to run a task after compilation: `nabs migrate:create --name 'test-migrate'` which would just execute: `npm run migrate:create -- --name 'test-migrate'`.
-* Consider an option to automatically place a nabs task in scripts that just recompiles the scripts: `"nabs": "nabs"`.
-* Command line options:
-  * Specify location/name of task source file
-  * Specify location/name of scripts destination file
-  * Verbose mode
 
 ## References/inspiration
 
