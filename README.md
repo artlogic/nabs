@@ -180,10 +180,6 @@ Notice that `:server` becomes `very:deep:task:server`.
 * Info/warning messages when using npm's special names (e.g. publish, install, uninstall, version, and all variations). (Use winston?)
 * Consider allowing nabs to run a task after compilation: `nabs migrate:create --name 'test-migrate'` which would just execute: `npm run migrate:create -- --name 'test-migrate'`.
 * Consider an option to automatically place a nabs task in scripts that just recompiles the scripts: `"nabs": "nabs"`.
-* Command line options:
-  * Specify location/name of task source file
-  * Specify location/name of scripts destination file
-  * Verbose mode
 * Look for dependency loops and duplicate calls.
 * Ignore action errors (use `;` instead of `&&` for certain tasks)... end with `; true` if necessary (won't work on windows).
 * Platform independence? (https://github.com/shelljs/shx, https://www.npmjs.com/package/bashful)

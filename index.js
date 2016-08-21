@@ -4,7 +4,17 @@
 
 const fs = require('fs');
 const jsonfile = require('jsonfile');
+const log = require('winston');
+const path = require('path');
+const program = require('commander');
 const yaml = require('js-yaml');
+
+const levels = [
+  'error',
+  'warn',
+  'info',
+  'debug',
+];
 
 // utility function - string -> [string], [] -> [], null -> []
 function makeArray(item) {
@@ -140,9 +150,9 @@ function checkDependencies(tasks, names) {
   });
 }
 
-function main() {
-  const tasks = yaml.safeLoad(fs.readFileSync('nabs.yml', 'utf8'));
-  const pkg = jsonfile.readFileSync('package.json', 'utf8');
+function main(options) {
+  const tasks = yaml.safeLoad(fs.readFileSync(options.nabs || 'nabs.yml', 'utf8'));
+  const pkg = jsonfile.readFileSync(options.package || 'package.json', 'utf8');
   const scripts = pkg.nabs = {};
   let taskList = [];
 
@@ -163,4 +173,14 @@ function main() {
   });
 }
 
-main();
+program
+  .version(JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8')).version)
+  .option('-n, --nabs <file>', 'nabs.yml file (defaults to nabs.yml in current dir)')
+  .option('-p, --package <file>', 'package.json file (defaults to package.json in current dir)')
+  .option('-v, --verbose', '', (v, total) => total + 1, 0)
+  .parse(process.argv);
+
+log.cli();
+log.level = levels[program.verbose || 0];
+
+main(program);
