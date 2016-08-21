@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/artlogic/nabs#readme",
   "dependencies": {
+    "commander": "^2.9.0",
     "js-yaml": "^3.6.1",
     "jsonfile": "^2.3.1",
     "winston": "^2.2.0"
