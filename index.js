@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --harmony
 
 'use strict';
 
@@ -6,81 +6,156 @@ const fs = require('fs');
 const jsonfile = require('jsonfile');
 const yaml = require('js-yaml');
 
-function buildScripts(tasks, prefix) {
-  const scripts = {};
-
-  if (typeof tasks === 'string' && prefix) {
-    // single action
-    scripts[prefix] = tasks;
-  } else if (Array.isArray(tasks) && prefix) {
-    // list of actions
-    scripts[prefix] = tasks.join(' && ');
-  } else {
-    // get a list of subtasks (filter $ directives)
-    const keys = Object.keys(tasks)
-          .filter((item) => !item.startsWith('$'))
-          .sort();
-
-    // no prefix, no action
-    if (prefix) {
-      // custom dependencies
-      if (Array.isArray(tasks.$depend)) {
-        scripts[prefix] = tasks.$depend.map((key) => {
-          if (key.startsWith(':')) {
-            return `npm run ${prefix}${key}`;
-          }
-
-          return `npm run ${key}`;
-        }).join(' && ');
-      } else if (typeof tasks.$depend === 'string') {
-        if (tasks.$depend.startsWith(':')) {
-          scripts[prefix] = `npm run ${prefix}${tasks.$depend}`;
-        } else {
-          scripts[prefix] = `npm run ${tasks.$depend}`;
-        }
-      } else if (tasks.$depend === null) {
-        scripts[prefix] = '';
-      } else {
-        // make the default action for the task (run children)
-        scripts[prefix] = keys.map((key) => `npm run ${prefix}:${key}`)
-          .join(' && ');
-      }
-
-      // custom action - does the action exist and is it not a zero length array?
-      if (tasks.$action && tasks.$action.length !== 0) {
-        // append to existing action, if needed
-        if (scripts[prefix]) {
-          scripts[prefix] += ' && ';
-        }
-
-        if (typeof tasks.$action === 'string') {
-          scripts[prefix] += tasks.$action;
-        } else if (Array.isArray(tasks.$action)) {
-          scripts[prefix] += tasks.$action.join(' && ');
-        }
-      }
-    }
-
-    // build the subtasks
-    keys.forEach((key) => {
-      const taskName = prefix ? `${prefix}:${key}` : key;
-      Object.assign(scripts, buildScripts(tasks[key], taskName));
-    });
+// utility function - string -> [string], [] -> [], null -> []
+function makeArray(item) {
+  if (typeof item === 'string') {
+    return [item];
+  } else if (Array.isArray(item)) {
+    return item;
+  } else if (item === null) {
+    return [];
   }
 
-  // don't allow empty script entries - npm doesn't like this
-  if (!scripts[prefix]) {
-    delete scripts[prefix];
+  throw new Error(`Item must be string, array or null: ${item}`);
+}
+
+class Task {
+  constructor(name) {
+    // name is an array of the full parts of the name
+    // e.g. ['super', 'task', 'sub']
+    this.name = name;
+
+    // an array of action strings (shell commands)
+    this.actions = [];
+    // an array of task names: ['task:sub1', 'task:sub2', 'task:sub3']
+    this.dependencies = [];
+
+    // children are needed to calculate the default dependencies
+    // an array of task names: ['task:sub1', 'task:sub2', 'task:sub3']
+    this.children = [];
+    // default to using the children as dependencies
+    this.useChildrenAsDependencies = true;
+  }
+
+  // expects a single action (string), or a list of actions (array)
+  addAction(action) {
+    this.actions = this.actions.concat(makeArray(action));
+  }
+
+  // expects a child task name (string) and fully qualifies it
+  addChild(child) {
+    this.children.push(`${this.scriptName}:${child}`);
+  }
+
+  // expects a single dependency (string), or a list of dependencies (array)
+  // the empty array and null are also allowed
+  addDependency(task) {
+    const name = this.scriptName;
+    const deps = makeArray(task);
+
+    // dependencies have been overridden
+    this.useChildrenAsDependencies = false;
+
+    // change shorthand deps (:subtask) to full (task:subtask)
+    deps.forEach((item, index) => {
+      if (item.startsWith(':')) {
+        deps[index] = name + item;
+      }
+    });
+
+    this.dependencies = this.dependencies.concat(deps);
+  }
+
+  get scriptName() {
+    return this.name.join(':');
+  }
+
+  get scriptValue() {
+    let rawActions = [];
+
+    function npmify(arr) {
+      return arr.map((key) => `npm run ${key}`);
+    }
+
+    // generate dependencies
+    if (this.useChildrenAsDependencies) {
+      rawActions = npmify(this.children.sort());
+    } else {
+      rawActions = npmify(this.dependencies);
+    }
+
+    // concat actions
+    rawActions = rawActions.concat(this.actions);
+
+    if (rawActions.length === 0) {
+      throw new Error(`Tasks with no actions or dependencies are invalid: ${this}`);
+    }
+
+    return rawActions.join(' && ');
+  }
+
+  toString() {
+    return this.scriptName;
+  }
+}
+
+// given a tasks object (from the YAML file), returns a list of Task objects
+function buildScripts(tasks, name) {
+  const task = new Task(name);
+  let scripts = [task];
+
+  if (typeof tasks === 'string' || Array.isArray(tasks)) {
+    // simple task
+    task.addAction(tasks);
+  } else {
+    // object task
+    if (typeof tasks.$depend !== 'undefined') {
+      task.addDependency(tasks.$depend);
+    }
+
+    if (typeof tasks.$action !== 'undefined') {
+      task.addAction(tasks.$action);
+    }
+
+    Object.keys(tasks)
+      .filter((item) => !item.startsWith('$'))
+      .forEach((key) => {
+        scripts = scripts.concat(buildScripts(tasks[key], name.concat(key)));
+        task.addChild(key);
+      });
   }
 
   return scripts;
 }
 
+function checkDependencies(tasks, names) {
+  const taskNames = new Set(names);
+
+  tasks.forEach((task) => {
+    task.dependencies.forEach((dependency) => {
+      if (!taskNames.has(dependency)) {
+        throw new Error(`Task ${task} has non-existent dependency: ${dependency}`);
+      }
+    });
+  });
+}
+
 function main() {
   const tasks = yaml.safeLoad(fs.readFileSync('nabs.yml', 'utf8'));
   const pkg = jsonfile.readFileSync('package.json', 'utf8');
+  let scripts = [];
 
-  pkg.scripts = buildScripts(tasks);
+  Object.keys(tasks).forEach((task) => {
+    scripts = scripts.concat(buildScripts(tasks[task], [task]));
+  });
+
+  const pkgScripts = pkg.nabs = {};
+  scripts.sort().forEach((item) => {
+    pkgScripts[item.scriptName] = item.scriptValue;
+  });
+
+  // verify dependencies
+  checkDependencies(scripts, Object.keys(pkgScripts));
 
   jsonfile.writeFileSync('package.json', pkg, {
     encoding: 'utf8',
