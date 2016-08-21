@@ -100,7 +100,7 @@ class Task {
 }
 
 // given a tasks object (from the YAML file), returns a list of Task objects
-function buildScripts(tasks, name) {
+function buildTasks(tasks, name) {
   const task = new Task(name);
   let scripts = [task];
 
@@ -120,7 +120,7 @@ function buildScripts(tasks, name) {
     Object.keys(tasks)
       .filter((item) => !item.startsWith('$'))
       .forEach((key) => {
-        scripts = scripts.concat(buildScripts(tasks[key], name.concat(key)));
+        scripts = scripts.concat(buildTasks(tasks[key], name.concat(key)));
         task.addChild(key);
       });
   }
@@ -143,19 +143,19 @@ function checkDependencies(tasks, names) {
 function main() {
   const tasks = yaml.safeLoad(fs.readFileSync('nabs.yml', 'utf8'));
   const pkg = jsonfile.readFileSync('package.json', 'utf8');
-  let scripts = [];
+  const scripts = pkg.nabs = {};
+  let taskList = [];
 
   Object.keys(tasks).forEach((task) => {
-    scripts = scripts.concat(buildScripts(tasks[task], [task]));
+    taskList = taskList.concat(buildTasks(tasks[task], [task]));
   });
 
-  const pkgScripts = pkg.nabs = {};
-  scripts.sort().forEach((item) => {
-    pkgScripts[item.scriptName] = item.scriptValue;
+  taskList.sort().forEach((item) => {
+    scripts[item.scriptName] = item.scriptValue;
   });
 
   // verify dependencies
-  checkDependencies(scripts, Object.keys(pkgScripts));
+  checkDependencies(taskList, Object.keys(scripts));
 
   jsonfile.writeFileSync('package.json', pkg, {
     encoding: 'utf8',
