@@ -23,9 +23,9 @@
 
 const fs = require('fs');
 const jsonfile = require('jsonfile');
-const log = require('winston');
 const path = require('path');
 const program = require('commander');
+const winston = require('winston');
 const yaml = require('js-yaml');
 
 const levels = [
@@ -199,7 +199,15 @@ program
   .option('-v, --verbose', '', (v, total) => total + 1, 0)
   .parse(process.argv);
 
+const log = new winston.Logger({
+  level: levels[program.verbose || 0],
+  transports: [
+    new (winston.transports.Console)({
+      handleExceptions: true,
+      humanReadableUnhandledException: true,
+    }),
+  ],
+});
 log.cli();
-log.level = levels[program.verbose || 0];
 
 main(program);
