@@ -103,7 +103,14 @@ describe('Task', () => {
     it('should npmify the children by default');
     it('should npmify the depends, otherwise');
     it('should add the actions to raw actions');
-    it('should throw an error if no actions or depends');
+
+    it('should throw an error if no actions or depends', () => {
+      const task = new nabs.Task([]);
+
+      (() => task.scriptValue)
+        .should.throw(/Tasks with no actions or dependencies are invalid: .*/);
+    });
+
     it('should return the raw actions joined with `&&`');
   });
 
