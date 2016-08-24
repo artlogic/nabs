@@ -196,7 +196,7 @@ program
   .version(JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8')).version)
   .option('-n, --nabs <file>', 'nabs.yml file (defaults to nabs.yml in current dir)')
   .option('-p, --package <file>', 'package.json file (defaults to package.json in current dir)')
-  .option('-v, --verbose', '', (v, total) => total + 1, 0)
+  .option('-v, --verbose', 'pass up to 3 times to increase verbosity', (v, total) => total + 1, 0)
   .parse(process.argv);
 
 const log = new winston.Logger({
