@@ -4,6 +4,7 @@
   "description": "Not Another Build System - compiles YAML to scripts in package.json",
   "main": "index.js",
   "scripts": {
+    "nabs": "nabs",
     "test": "npm run test:lint && npm run test:unit",
     "test:lint": "eslint .",
     "test:unit": "mocha"

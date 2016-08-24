@@ -1,0 +1,6 @@
+# regenerate package.json scripts
+nabs: nabs
+
+test:
+  lint: eslint .
+  unit: mocha
