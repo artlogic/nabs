@@ -172,7 +172,7 @@ function checkDependencies(tasks, names) {
 function main(options) {
   const tasks = yaml.safeLoad(fs.readFileSync(options.nabs || 'nabs.yml', 'utf8'));
   const pkg = jsonfile.readFileSync(options.package || 'package.json', 'utf8');
-  const scripts = pkg.nabs = {};
+  const scripts = pkg.scripts = {};
   let taskList = [];
 
   Object.keys(tasks).forEach((task) => {
