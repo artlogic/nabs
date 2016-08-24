@@ -181,7 +181,6 @@ Notice that `:server` becomes `very:deep:task:server`.
 * Info messages when using npm's special names (e.g. publish, install, uninstall, version, and all variations).
 * Consider allowing nabs to run a task after compilation: `nabs migrate:create --name 'test-migrate'` which would just execute: `npm run migrate:create -- --name 'test-migrate'`. This is a little tricky now that commander is being used.
 * Consider an option to automatically place a nabs task in scripts that just recompiles the scripts: `"nabs": "nabs"`. Probably should be the default. Maybe an option to suppress it?
-* Look for dependency loops and duplicate calls.
 * Ignore action errors (use `;` instead of `&&` for certain tasks)... end with `; true` if necessary (won't work on windows). How do you mark an action as ok to fail?
 * Platform independence? (https://github.com/shelljs/shx, https://www.npmjs.com/package/bashful) - the only bashism we use currently is `&&` and that works in cmd.exe.
 * Allow actions to be embedded JS snippets as an alternative to shell commands. They might be output into `./scripts`. Use $type.
@@ -189,6 +188,9 @@ Notice that `:server` becomes `very:deep:task:server`.
 * Support for watching files/folders and kicking off tasks (nodemon, onchange). Use $watch.
 * Support for parallel tasks (parallelshell). Use $parallel.
 * Reusable actions?
+* Look for dependency problems. These problem are always caused by manual dependencies, and can be fixed manually as well. It might be helpful to identify problems. Things I can find:
+  * Dependency loops. If a dependency is a child of itself, there's s loop. Relatively easy.
+  * Problems with auto-generated dependencies. An auto-generated dependency can interact with a manual dependency in such a way that a dependency is run twice unnecessarily.
 
 ## References/inspiration
 
