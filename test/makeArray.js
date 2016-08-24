@@ -12,17 +12,20 @@ describe('makeArray', () => {
     nabs.makeArray('multi word string').should.eql(['multi word string']);
   });
 
-  it('should return [] if passed []', () => {
+  it('should return a copy of [] if passed []', () => {
     let array;
 
     array = [];
-    nabs.makeArray(array).should.equal(array);
+    nabs.makeArray(array).should.eql(array);
+    nabs.makeArray(array).should.not.equal(array);
 
     array = ['this'];
-    nabs.makeArray(array).should.equal(array);
+    nabs.makeArray(array).should.eql(array);
+    nabs.makeArray(array).should.not.equal(array);
 
     array = [1, 2, 3];
-    nabs.makeArray(array).should.equal(array);
+    nabs.makeArray(array).should.eql(array);
+    nabs.makeArray(array).should.not.equal(array);
   });
 
   it('should return empty [] if passed null', () => {

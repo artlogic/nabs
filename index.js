@@ -40,7 +40,7 @@ function makeArray(item) {
   if (typeof item === 'string') {
     return [item];
   } else if (Array.isArray(item)) {
-    return item;
+    return item.slice();
   } else if (item === null) {
     return [];
   }
