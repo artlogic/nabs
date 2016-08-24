@@ -210,4 +210,16 @@ const log = new winston.Logger({
 });
 log.cli();
 
-main(program);
+if (!module.parent) {
+  // we've been run directly
+  main(program);
+} else {
+  // we've been imported - just expose the machinery
+  module.exports = {
+    makeArray,
+    Task,
+    buildTasks,
+    checkDependencies,
+    main,
+  };
+}
