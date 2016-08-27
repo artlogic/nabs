@@ -40,7 +40,8 @@
     "eslint-plugin-import": "^1.14.0",
     "eslint-plugin-jsx-a11y": "^2.1.0",
     "eslint-plugin-react": "^6.1.2",
-    "mocha": "^3.0.2"
+    "mocha": "^3.0.2",
+    "testdouble": "^1.6.0"
   },
   "engines": {
     "node": ">=4"
