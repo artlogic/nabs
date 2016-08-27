@@ -28,15 +28,29 @@ const program = require('commander');
 const winston = require('winston');
 const yaml = require('js-yaml');
 
-const levels = [
+const version = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8')).version;
+
+const log = new winston.Logger({
+  transports: [
+    new (winston.transports.Console)({
+      handleExceptions: true,
+      humanReadableUnhandledException: true,
+    }),
+  ],
+});
+log.cli();
+
+const logLevels = [
   'error',
   'warn',
   'info',
   'debug',
 ];
 
-// utility function - string -> [string], [] -> [], null -> []
-function makeArray(item) {
+const nabs = {};
+
+// utility function - string -> [string], [] -> copy of [], null -> []
+nabs.makeArray = function makeArray(item) {
   if (typeof item === 'string') {
     return [item];
   } else if (Array.isArray(item)) {
@@ -46,9 +60,9 @@ function makeArray(item) {
   }
 
   throw new Error(`Item must be string, array or null: ${item}`);
-}
+};
 
-class Task {
+nabs.Task = class Task {
   constructor(name) {
     // name is an array of the full parts of the name
     // e.g. ['super', 'task', 'sub']
@@ -68,7 +82,7 @@ class Task {
 
   // expects a single action (string), or a list of actions (array)
   addAction(action) {
-    this.actions = this.actions.concat(makeArray(action));
+    this.actions = this.actions.concat(nabs.makeArray(action));
   }
 
   // expects a child task name (string) and fully qualifies it
@@ -80,7 +94,7 @@ class Task {
   // the empty array and null are also allowed
   addDependency(task) {
     const name = this.scriptName;
-    const deps = makeArray(task);
+    const deps = nabs.makeArray(task);
 
     // dependencies have been overridden
     this.useChildrenAsDependencies = false;
@@ -126,11 +140,11 @@ class Task {
   toString() {
     return this.scriptName;
   }
-}
+};
 
 // given a tasks object (from the YAML file), returns a list of Task objects
-function buildTasks(tasks, name) {
-  const task = new Task(name);
+nabs.buildTasks = function buildTasks(tasks, name) {
+  const task = new nabs.Task(name);
   let scripts = [task];
 
   if (typeof tasks === 'string' || Array.isArray(tasks)) {
@@ -149,15 +163,16 @@ function buildTasks(tasks, name) {
     Object.keys(tasks)
       .filter((item) => !item.startsWith('$'))
       .forEach((key) => {
-        scripts = scripts.concat(buildTasks(tasks[key], name.concat(key)));
+        scripts = scripts.concat(nabs.buildTasks(tasks[key], name.concat(key)));
         task.addChild(key);
       });
   }
 
   return scripts;
-}
+};
 
-function checkDependencies(tasks, names) {
+// look for missing dependencies
+nabs.checkDependencies = function checkDependencies(tasks, names) {
   const taskNames = new Set(names);
 
   tasks.forEach((task) => {
@@ -167,59 +182,68 @@ function checkDependencies(tasks, names) {
       }
     });
   });
-}
+};
 
-function main(options) {
-  const tasks = yaml.safeLoad(fs.readFileSync(options.nabs || 'nabs.yml', 'utf8'));
-  const pkg = jsonfile.readFileSync(options.package || 'package.json', 'utf8');
-  const scripts = pkg.scripts = {};
+// processes tasks, returns scripts
+nabs.process = function process(tasks) {
+  const scripts = {};
   let taskList = [];
 
+  log.info('Processing tasks...');
   Object.keys(tasks).forEach((task) => {
-    taskList = taskList.concat(buildTasks(tasks[task], [task]));
+    taskList = taskList.concat(nabs.buildTasks(tasks[task], [task]));
   });
 
+  log.info('Building scripts...');
   taskList.sort().forEach((item) => {
     scripts[item.scriptName] = item.scriptValue;
   });
 
-  // verify dependencies
-  checkDependencies(taskList, Object.keys(scripts));
+  log.info('Checking dependencies...');
+  nabs.checkDependencies(taskList, Object.keys(scripts));
 
+  return scripts;
+};
+
+nabs.main = function main(options) {
+  const nabsFile = options.nabs || 'nabs.yml';
+  log.info('Opening %s...', nabsFile);
+  const tasks = yaml.safeLoad(fs.readFileSync(nabsFile, 'utf8'));
+
+  const pkgFile = options.package || 'package.json';
+  log.info('Opening %s...', pkgFile);
+  const pkg = jsonfile.readFileSync(pkgFile, 'utf8');
+
+  pkg.scripts = nabs.process(tasks);
+
+  log.info('Writing %s...', pkgFile);
   jsonfile.writeFileSync('package.json', pkg, {
     encoding: 'utf8',
     spaces: 2,
   });
-}
+};
 
 program
-  .version(JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8')).version)
+  .version(version)
   .option('-n, --nabs <file>', 'nabs.yml file (defaults to nabs.yml in current dir)')
   .option('-p, --package <file>', 'package.json file (defaults to package.json in current dir)')
   .option('-v, --verbose', 'pass up to 3 times to increase verbosity', (v, total) => total + 1, 0)
   .parse(process.argv);
 
-const log = new winston.Logger({
-  level: levels[program.verbose || 0],
-  transports: [
-    new (winston.transports.Console)({
-      handleExceptions: true,
-      humanReadableUnhandledException: true,
-    }),
-  ],
-});
-log.cli();
+log.level = logLevels[program.verbose || 0];
 
 if (!module.parent) {
   // we've been run directly
-  main(program);
+  log.info('Starting nabs v%s', version);
+
+  try {
+    nabs.main(program);
+  } catch (e) {
+    log.error(e.message);
+    log.debug(e);
+    process.exit(1);
+  }
 } else {
   // we've been imported - just expose the machinery
-  module.exports = {
-    makeArray,
-    Task,
-    buildTasks,
-    checkDependencies,
-    main,
-  };
+  module.exports = nabs;
 }
