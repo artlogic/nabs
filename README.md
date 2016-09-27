@@ -178,6 +178,7 @@ Notice that `:server` becomes `very:deep:task:server`.
 ## Future enhancements
 
 * Better error handling.
+* Look at using Flow for type checking
 * Info messages when using npm's special names (e.g. publish, install, uninstall, version, and all variations).
 * Consider allowing nabs to run a task after compilation: `nabs migrate:create --name 'test-migrate'` which would just execute: `npm run migrate:create -- --name 'test-migrate'`. This is a little tricky now that commander is being used.
 * Consider an option to automatically place a nabs task in scripts that just recompiles the scripts: `"nabs": "nabs"`. Probably should be the default. Maybe an option to suppress it?
