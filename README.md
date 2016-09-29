@@ -4,6 +4,18 @@ nabs is a compiler that turns a nicely structured YAML file into script entries 
 
 Note: nabs is only designed to work in Bourne shell compatible environments. It's only been tested (thus far) with Node 4.x.
 
+```
+  Usage: nabs [options]
+
+  Options:
+
+    -h, --help            output usage information
+    -V, --version         output the version number
+    -n, --nabs <file>     nabs.yml file (defaults to nabs.yml in current dir)
+    -p, --package <file>  package.json file (defaults to package.json in current dir)
+    -v, --verbose         pass up to 3 times to increase verbosity
+```
+
 ## Getting Started
 
 Start by installing nabs:
@@ -177,10 +189,11 @@ Notice that `:server` becomes `very:deep:task:server`.
 
 ## Future enhancements
 
+* Integration tests.
 * Better error handling.
 * Look at using Flow for type checking
 * Info messages when using npm's special names (e.g. publish, install, uninstall, version, and all variations).
-* Consider allowing nabs to run a task after compilation: `nabs migrate:create --name 'test-migrate'` which would just execute: `npm run migrate:create -- --name 'test-migrate'`. This is a little tricky now that commander is being used.
+* Consider allowing nabs to run a task after compilation: `nabs migrate:create --name 'test-migrate'` which would just execute: `npm run migrate:create -- --name 'test-migrate'`. This is a little tricky now that commander is being used. Consider tab completion via bash/zsh. Also take a look at `ntl`'s menu system.
 * Consider an option to automatically place a nabs task in scripts that just recompiles the scripts: `"nabs": "nabs"`. Probably should be the default. Maybe an option to suppress it?
 * Ignore action errors (use `;` instead of `&&` for certain tasks)... end with `; true` if necessary (won't work on windows). How do you mark an action as ok to fail?
 * Platform independence? (https://github.com/shelljs/shx, https://www.npmjs.com/package/bashful) - the only bashism we use currently is `&&` and that works in cmd.exe.
