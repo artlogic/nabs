@@ -1,6 +1,6 @@
 {
   "name": "nabs",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Not Another Build System - compiles YAML to scripts in package.json",
   "main": "index.js",
   "scripts": {
