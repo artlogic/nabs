@@ -216,6 +216,10 @@ nabs.main = function main(options) {
 
   pkg.scripts = nabs.process(tasks);
 
+  if (!options.disable) {
+    pkg.scripts.nabs = 'nabs';
+  }
+
   log.info('Writing %s...', pkgFile);
   jsonfile.writeFileSync('package.json', pkg, {
     encoding: 'utf8',
@@ -225,6 +229,7 @@ nabs.main = function main(options) {
 
 program
   .version(version)
+  .option('-d, --disable', 'disable the default nabs regenerate task')
   .option('-n, --nabs <file>', 'nabs.yml file (defaults to nabs.yml in current dir)')
   .option('-p, --package <file>', 'package.json file (defaults to package.json in current dir)')
   .option('-v, --verbose', 'pass up to 3 times to increase verbosity', (v, total) => total + 1, 0)

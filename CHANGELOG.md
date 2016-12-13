@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-* ...
+* Automatically add nabs task (and option to suppress)
 
 ## [0.2.0] - 2016-09-29
 

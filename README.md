@@ -11,6 +11,7 @@ Note: nabs is only designed to work in Bourne shell compatible environments. It'
 
     -h, --help            output usage information
     -V, --version         output the version number
+    -d, --disable         disable the default nabs regenerate task
     -n, --nabs <file>     nabs.yml file (defaults to nabs.yml in current dir)
     -p, --package <file>  package.json file (defaults to package.json in current dir)
     -v, --verbose         pass up to 3 times to increase verbosity
@@ -194,7 +195,6 @@ Notice that `:server` becomes `very:deep:task:server`.
 * Look at using Flow for type checking
 * Info messages when using npm's special names (e.g. publish, install, uninstall, version, and all variations).
 * Consider allowing nabs to run a task after compilation: `nabs migrate:create --name 'test-migrate'` which would just execute: `npm run migrate:create -- --name 'test-migrate'`. This is a little tricky now that commander is being used. Consider tab completion via bash/zsh. Also take a look at `ntl`'s menu system.
-* Consider an option to automatically place a nabs task in scripts that just recompiles the scripts: `"nabs": "nabs"`. Probably should be the default. Maybe an option to suppress it?
 * Ignore action errors (use `;` instead of `&&` for certain tasks)... end with `; true` if necessary (won't work on windows). How do you mark an action as ok to fail?
 * Platform independence? (https://github.com/shelljs/shx, https://www.npmjs.com/package/bashful) - the only bashism we use currently is `&&` and that works in cmd.exe.
 * Allow actions to be embedded JS snippets as an alternative to shell commands. They might be output into `./scripts`. Use $type.
