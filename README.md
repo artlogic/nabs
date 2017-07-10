@@ -197,7 +197,7 @@ Notice that `:server` becomes `very:deep:task:server`.
 * Consider allowing nabs to run a task after compilation: `nabs migrate:create --name 'test-migrate'` which would just execute: `npm run migrate:create -- --name 'test-migrate'`. This is a little tricky now that commander is being used. Consider tab completion via bash/zsh. Also take a look at `ntl`'s menu system.
 * Ignore action errors (use `;` instead of `&&` for certain tasks)... end with `; true` if necessary (won't work on windows). How do you mark an action as ok to fail?
 * Platform independence? (https://github.com/shelljs/shx, https://www.npmjs.com/package/bashful) - the only bashism we use currently is `&&` and that works in cmd.exe.
-* Allow actions to be embedded JS snippets as an alternative to shell commands. They might be output into `./scripts`. Use $type.
+* Allow actions to be embedded JS snippets as an alternative to shell commands. They might be output into `./scripts`. Use $type. Look at scripty: https://www.npmjs.com/package/scripty
 * File based tasks - that is, operate on all .js files... Need to be able to ignore dirs globally, and on case by case... Look at grunt for this. Any set of params should compile to a find command. Is there a platform independent (js based) find? Use $files.
 * Support for watching files/folders and kicking off tasks (nodemon, onchange). Use $watch.
 * Support for parallel tasks (parallelshell). Use $parallel.
