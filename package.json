@@ -28,20 +28,18 @@
   },
   "homepage": "https://github.com/artlogic/nabs#readme",
   "dependencies": {
-    "commander": "^2.9.0",
-    "js-yaml": "^3.7.0",
-    "jsonfile": "^2.4.0",
-    "winston": "^2.3.0"
+    "commander": "^2.11.0",
+    "js-yaml": "^3.9.0",
+    "jsonfile": "^3.0.1",
+    "winston": "^2.3.1"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "eslint": "^3.12.1",
-    "eslint-config-airbnb": "^13.0.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^2.2.3",
-    "eslint-plugin-react": "^6.8.0",
-    "mocha": "^3.2.0",
-    "testdouble": "^1.10.0"
+    "chai": "^4.0.2",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb-base": "^11.2.0",
+    "eslint-plugin-import": "^2.6.1",
+    "mocha": "^3.4.2",
+    "testdouble": "^3.2.2"
   },
   "engines": {
     "node": ">=4"
