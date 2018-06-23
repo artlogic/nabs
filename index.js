@@ -1,4 +1,4 @@
-#!/usr/bin/env node --harmony
+#!/usr/bin/env node
 
 // nabs - Not another build system. Easy management of package.json scripts.
 //
@@ -28,9 +28,13 @@ const program = require('commander');
 const winston = require('winston');
 const yaml = require('js-yaml');
 
-const version = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8')).version;
+const { version } = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
 
-const log = new winston.Logger({
+const log = winston.createLogger({
+  format: winston.format.combine(
+    winston.format.splat(),
+    winston.format.cli(),
+  ),
   transports: [
     new (winston.transports.Console)({
       handleExceptions: true,
@@ -38,7 +42,6 @@ const log = new winston.Logger({
     }),
   ],
 });
-log.cli();
 
 const logLevels = [
   'error',
@@ -53,9 +56,13 @@ const nabs = {};
 nabs.makeArray = function makeArray(item) {
   if (typeof item === 'string') {
     return [item];
-  } else if (Array.isArray(item)) {
+  }
+
+  if (Array.isArray(item)) {
     return item.slice();
-  } else if (item === null) {
+  }
+
+  if (item === null) {
     return [];
   }
 

@@ -157,7 +157,7 @@ describe('Task', () => {
       const task = new nabs.Task(['test']);
       const depends = ['y', 'z', 'x'];
 
-      td.reset();  // use the default makeArray
+      td.reset(); // use the default makeArray
       task.addDependency(depends[0]);
       task.addDependency(depends[1]);
       task.addDependency(depends[2]);
@@ -174,7 +174,7 @@ describe('Task', () => {
       const task = new nabs.Task(['test']);
       const actions = ['y', 'z', 'x'];
 
-      td.reset();  // use the default makeArray
+      td.reset(); // use the default makeArray
       task.addAction(actions[0]);
       task.addAction(actions[1]);
       task.addAction(actions[2]);

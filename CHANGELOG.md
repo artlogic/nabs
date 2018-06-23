@@ -11,6 +11,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Automatically add nabs task (and option to suppress)
 
+### Updated
+
+* Updated pretty much every dependency to latest versions
+
+### Removed
+
+* Removed `--harmony` flag as it was causing problems in some environments
+* Removed support for Node 4.x and below
+
 ## [0.2.0] - 2016-09-29
 
 ### Added

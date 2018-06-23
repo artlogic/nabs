@@ -43,8 +43,7 @@ describe('process', () => {
 
     task.addAction(action);
 
-    td.when(nabs.buildTasks(td.matchers.anything(),
-                            td.matchers.isA(Array)))
+    td.when(nabs.buildTasks(td.matchers.anything(), td.matchers.isA(Array)))
       .thenReturn([task]);
 
     const scripts = nabs.process({ [name]: action });
