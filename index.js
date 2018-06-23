@@ -31,10 +31,7 @@ const yaml = require('js-yaml');
 const { version } = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
 
 const log = winston.createLogger({
-  format: winston.format.combine(
-    winston.format.splat(),
-    winston.format.cli(),
-  ),
+  format: winston.format.combine(winston.format.splat(), winston.format.cli()),
   transports: [
     new (winston.transports.Console)({
       handleExceptions: true,
