@@ -42,7 +42,7 @@
     "testdouble": "^3.12.2"
   },
   "engines": {
-    "node": ">=6"
+    "node": ">=10"
   },
   "bin": {
     "nabs": "./index.js"

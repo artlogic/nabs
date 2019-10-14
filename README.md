@@ -2,7 +2,7 @@
 
 nabs is a compiler that turns a nicely structured YAML file into script entries in your `package.json`. npm is a great minimal task runner that's already installed along with node. However, a large number of multi-action tasks in your `package.json` can be hard to manage. That's where nabs comes in. You can write your tasks in much easier to manage format and then compile them into standard script entries.
 
-Note: nabs is only designed to work in Bourne shell compatible environments. It should work with Node 6.x or greater.
+Note: nabs is only designed to work in Bourne shell compatible environments. It should work with Node 10.x or greater.
 
 ```
   Usage: nabs [options]
