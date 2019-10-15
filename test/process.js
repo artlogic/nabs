@@ -22,14 +22,19 @@
 const chai = require('chai');
 const td = require('testdouble');
 
-const nabs = require('../');
+const Task = require('../src/Task');
 
 chai.should();
 
+let checkDependencies;
+let buildTasks;
+let process;
 describe('process', () => {
   beforeEach(() => {
-    nabs.buildTasks = td.function('buildTasks');
-    nabs.checkDependencies = td.function('checkDependdencies');
+    buildTasks = td.replace('../src/utils/buildTasks');
+    checkDependencies = td.replace('../src/utils/checkDependencies');
+    // eslint-disable-next-line global-require
+    process = require('../src/utils/process');
   });
 
   afterEach(() => {
@@ -39,17 +44,17 @@ describe('process', () => {
   it('should process the tasks properly', () => {
     const name = 'test';
     const action = 'my action';
-    const task = new nabs.Task([name]);
+    const task = new Task([name]);
 
     task.addAction(action);
 
-    td.when(nabs.buildTasks(td.matchers.anything(), td.matchers.isA(Array)))
+    td.when(buildTasks(td.matchers.anything(), td.matchers.isA(Array)))
       .thenReturn([task]);
 
-    const scripts = nabs.process({ [name]: action });
+    const scripts = process({ [name]: action });
     scripts.should.have.property(name);
     scripts[name].should.equal(action);
 
-    td.verify(nabs.checkDependencies([task], ['test']));
+    td.verify(checkDependencies([task], ['test']));
   });
 });

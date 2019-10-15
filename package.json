@@ -2,7 +2,7 @@
   "name": "nabs",
   "version": "0.4.0",
   "description": "Not Another Build System - compiles YAML to scripts in package.json",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "npm run test:lint && npm run test:unit",
     "test:lint": "eslint .",
@@ -45,7 +45,7 @@
     "node": ">=6"
   },
   "bin": {
-    "nabs": "./index.js"
+    "nabs": "./src/index.js"
   },
   "preferGlobal": true
 }
