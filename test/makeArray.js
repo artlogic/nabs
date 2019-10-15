@@ -20,7 +20,7 @@
 'use strict';
 
 const chai = require('chai');
-const nabs = require('../');
+const nabs = require('../dist/nabs');
 
 chai.should();
 

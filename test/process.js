@@ -22,7 +22,7 @@
 const chai = require('chai');
 const td = require('testdouble');
 
-const nabs = require('../');
+const nabs = require('../dist/nabs');
 
 chai.should();
 
