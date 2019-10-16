@@ -15,6 +15,10 @@ jobs:
       - checkout
 
       - run:
+        name: 'clean npm cache'
+        command: 'npm cache clean -f'
+
+      - run:
         name: update-npm
         command: 'sudo npm install -g npm@latest'
 
