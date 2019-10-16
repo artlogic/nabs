@@ -19,8 +19,8 @@ jobs:
           command: 'npm cache clean -f'
 
       - run:
-        name: update-npm
-        command: 'sudo npm install -g npm@latest'
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
 
       # Download and cache dependencies
       - restore_cache:
