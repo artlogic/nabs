@@ -15,8 +15,8 @@ jobs:
       - checkout
 
       - run:
-        name: 'clean npm cache'
-        command: 'npm cache clean -f'
+          name: 'clean npm cache'
+          command: 'npm cache clean -f'
 
       - run:
         name: update-npm
