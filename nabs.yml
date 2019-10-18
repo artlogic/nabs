@@ -1,3 +1,0 @@
-test:
-  lint: eslint .
-  unit: mocha

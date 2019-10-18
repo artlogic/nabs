@@ -21,12 +21,12 @@
 
 const fs = require('fs');
 const jsonfile = require('jsonfile');
-const path = require('path');
+const { resolve } = require('path');
 const program = require('commander');
 const winston = require('winston');
 const yaml = require('js-yaml');
 
-const { version } = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
+const { version } = JSON.parse(fs.readFileSync(resolve('package.json'), 'utf8'));
 
 const log = winston.createLogger({
   format: winston.format.combine(winston.format.splat(), winston.format.cli()),
@@ -208,7 +208,7 @@ nabs.process = function process(tasks) {
 };
 
 nabs.main = function main(options) {
-  const nabsFile = options.nabs || 'nabs.yml';
+  const nabsFile = options.nabs || resolve('src/nabs.yml');
   log.info('Opening %s...', nabsFile);
   const tasks = yaml.safeLoad(fs.readFileSync(nabsFile, 'utf8'));
 
