@@ -121,7 +121,7 @@ nabs.Task = class Task {
     let rawActions = [];
 
     function npmify(arr) {
-      return arr.map(key => `npm run ${key}`);
+      return arr.map((key) => `npm run ${key}`);
     }
 
     // generate dependencies
@@ -165,7 +165,7 @@ nabs.buildTasks = function buildTasks(tasks, name) {
     }
 
     Object.keys(tasks)
-      .filter(item => !item.startsWith('$'))
+      .filter((item) => !item.startsWith('$'))
       .forEach((key) => {
         scripts = scripts.concat(nabs.buildTasks(tasks[key], name.concat(key)));
         task.addChild(key);
