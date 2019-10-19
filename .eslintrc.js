@@ -4,7 +4,7 @@ module.exports = {
     "import"
   ],
   "parserOptions": {
-    "sourceType": "script"
+    "sourceType": "module"
   },
   "rules": {
     "strict": [

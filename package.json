@@ -2,16 +2,16 @@
   "name": "nabs",
   "version": "0.4.0",
   "description": "Not Another Build System - compiles YAML to scripts in package.json",
-  "main": "dist/nabs.js",
+  "main": "dist",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.production.js --production",
     "dev": "cross-env NODE_ENV=development webpack --config webpack/webpack.development.js --watch",
-    "start": "node dist/nabs.js",
+    "start": "node dist",
     "test": "npm run test:lint && npm run test:unit",
     "test:lint": "eslint src",
     "test:unit": "mocha",
-    "watch": "nodemon dist/nabs.js",
-    "nabs": "nabs"
+    "watch": "nodemon dist",
+    "nabs": "npm start"
   },
   "repository": {
     "type": "git",
