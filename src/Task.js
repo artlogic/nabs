@@ -57,7 +57,7 @@ class Task {
     let rawActions = [];
 
     function npmify(arr) {
-      return arr.map(key => `npm run ${key}`);
+      return arr.map((key) => `npm run ${key}`);
     }
 
     // generate dependencies

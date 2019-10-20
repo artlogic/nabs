@@ -21,7 +21,7 @@ function buildTasks(tasks, name) {
     }
 
     Object.keys(tasks)
-      .filter(item => !item.startsWith('$'))
+      .filter((item) => !item.startsWith('$'))
       .forEach((key) => {
         scripts = scripts.concat(buildTasks(tasks[key], name.concat(key)));
         task.addChild(key);
