@@ -38,3 +38,6 @@ jspm_packages
 
 # Intellij
 .idea
+
+# Output folder
+dist

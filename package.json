@@ -6,12 +6,13 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.production.js --production",
     "dev": "cross-env NODE_ENV=development webpack --config webpack/webpack.development.js --watch",
-    "start": "node dist",
+    "prepare": "npm run build",
+    "start": "node dist/nabs.js",
     "test": "npm run test:lint && npm run test:unit",
     "test:lint": "eslint src",
     "test:unit": "mocha",
-    "watch": "nodemon dist",
-    "nabs": "npm start"
+    "watch": "nodemon dist/nabs.js",
+    "nabs": "nabs"
   },
   "repository": {
     "type": "git",
