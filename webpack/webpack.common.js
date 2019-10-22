@@ -3,15 +3,14 @@ const { resolve, join } = require('path');
 const { readFileSync } = require('fs');
 const NodeExternals = require('webpack-node-externals');
 
-const src = resolve('src');
+// const src = resolve('src');
 const dist = resolve('dist');
 const banner = readFileSync(resolve('webpack/file-header.txt')).toString().concat('\n');
 
 module.exports = {
   target: 'node',
   entry: {
-    index: src,
-    nabs: join(src, 'nabs.js'),
+    index: resolve('index.js'),
   },
   output: {
     filename: '[name].js',
