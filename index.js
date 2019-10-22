@@ -188,7 +188,7 @@ nabs.process = function process(tasks) {
 };
 
 nabs.main = function main(options) {
-  const nabsFile = options.nabs || resolve('src/nabs.yml');
+  const nabsFile = options.nabs || resolve('nabs.yml');
   log.info('Opening %s...', nabsFile);
   const tasks = yaml.safeLoad(fs.readFileSync(nabsFile, 'utf8'));
 
