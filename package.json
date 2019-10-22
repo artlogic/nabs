@@ -9,7 +9,7 @@
     "prepare": "npm run build",
     "start": "node dist/nabs.js",
     "test": "npm run test:lint && npm run test:unit",
-    "test:lint": "eslint src",
+    "test:lint": "eslint .",
     "test:unit": "mocha",
     "watch": "nodemon dist/nabs.js",
     "nabs": "nabs"
