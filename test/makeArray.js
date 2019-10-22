@@ -18,7 +18,7 @@
 // along with this nabs.  If not, see <http://www.gnu.org/licenses/>.
 
 const chai = require('chai');
-const nabs = require('../dist/nabs').default;
+const nabs = require('../dist').default;
 
 chai.should();
 

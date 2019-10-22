@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-const { resolve, join } = require('path');
+const { resolve } = require('path');
 const { readFileSync } = require('fs');
 const NodeExternals = require('webpack-node-externals');
 
