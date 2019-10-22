@@ -3,9 +3,6 @@ module.exports = {
   "plugins": [
     "import"
   ],
-  "parserOptions": {
-    "sourceType": "module"
-  },
   "rules": {
     "strict": [
       2,
