@@ -2,7 +2,7 @@
   "name": "nabs",
   "version": "0.4.0",
   "description": "Not Another Build System - compiles YAML to scripts in package.json",
-  "main": "dist",
+  "main": "index.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.production.js --production",
     "dev": "cross-env NODE_ENV=development webpack --config webpack/webpack.development.js --watch",
@@ -44,7 +44,7 @@
     "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
     "cross-env": "^6.0.3",
-    "eslint": "^5.3.0",
+    "eslint": "^6.5.1",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
     "mocha": "^6.2.0",
