@@ -176,7 +176,6 @@ nabs.process = function process(tasks) {
   });
 
   log.info('Building scripts...');
-
   taskList.sort().forEach((item) => {
     scripts[item.scriptName] = item.scriptValue;
   });
