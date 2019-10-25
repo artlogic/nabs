@@ -8,5 +8,10 @@ module.exports = {
       2,
       "safe"
     ],
+    "import/no-extraneous-dependencies": [
+      "error", {
+        "devDependencies": ["**/webpack.*.js"]
+      }
+    ],
   }
-};
+}

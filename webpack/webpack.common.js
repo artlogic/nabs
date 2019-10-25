@@ -3,7 +3,6 @@ const { resolve } = require('path');
 const { readFileSync } = require('fs');
 const NodeExternals = require('webpack-node-externals');
 
-// const src = resolve('src');
 const dist = resolve('dist');
 const banner = readFileSync(resolve('webpack/file-header.txt')).toString().concat('\n');
 
