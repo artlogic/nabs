@@ -5,13 +5,12 @@
   "main": "index.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.production.js --production",
-    "dev": "cross-env NODE_ENV=development webpack --config webpack/webpack.development.js --watch",
     "prepare": "npm run build",
-    "start": "node dist/nabs.js",
+    "start": "node dist/index.js",
     "test": "npm run test:lint && npm run test:unit",
-    "test:lint": "eslint .",
+    "test:lint": "eslint --ignore-pattern '!.eslintrc.js' .",
     "test:unit": "mocha",
-    "watch": "nodemon dist/nabs.js",
+    "watch": "cross-env NODE_ENV=development webpack --config webpack/webpack.development.js --watch",
     "nabs": "nabs"
   },
   "repository": {
@@ -48,7 +47,6 @@
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
     "mocha": "^6.2.0",
-    "nodemon": "^1.19.4",
     "testdouble": "^3.12.2",
     "webpack-cli": "^3.3.9",
     "webpack": "^4.41.2",

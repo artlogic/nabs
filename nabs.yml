@@ -1,9 +1,8 @@
 test:
-  lint: eslint src
+  lint: eslint --ignore-pattern '!.eslintrc.js' .
   unit: mocha
 
-start: node dist/nabs.js
-watch: nodemon dist/nabs.js
-dev: cross-env NODE_ENV=development webpack --config webpack/webpack.development.js --watch
+start: node dist/index.js
+watch: cross-env NODE_ENV=development webpack --config webpack/webpack.development.js --watch
 build: cross-env NODE_ENV=production webpack --config webpack/webpack.production.js --production
 prepare: npm run build
