@@ -3,13 +3,15 @@ module.exports = {
   "plugins": [
     "import"
   ],
-  "parserOptions": {
-    "sourceType": "script"
-  },
   "rules": {
     "strict": [
       2,
       "safe"
     ],
+    "import/no-extraneous-dependencies": [
+      "error", {
+        "devDependencies": ["**/webpack.*.js"]
+      }
+    ],
   }
-};
+}

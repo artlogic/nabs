@@ -1,34 +1,11 @@
-#!/usr/bin/env node
-
-// nabs - Not another build system. Easy management of package.json scripts.
-//
-// Copyright (C) 2016 James Kruth
-//
-// This file is part of nabs.
-//
-// nabs is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// nabs is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this nabs.  If not, see <http://www.gnu.org/licenses/>.
-
-'use strict';
-
 const fs = require('fs');
 const jsonfile = require('jsonfile');
-const path = require('path');
+const { resolve } = require('path');
 const program = require('commander');
 const winston = require('winston');
 const yaml = require('js-yaml');
 
-const { version } = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
+const { version } = JSON.parse(fs.readFileSync(resolve('package.json'), 'utf8'));
 
 const log = winston.createLogger({
   format: winston.format.combine(winston.format.splat(), winston.format.cli()),
@@ -210,7 +187,7 @@ nabs.process = function process(tasks) {
 };
 
 nabs.main = function main(options) {
-  const nabsFile = options.nabs || 'nabs.yml';
+  const nabsFile = options.nabs || resolve('nabs.yml');
   log.info('Opening %s...', nabsFile);
   const tasks = yaml.safeLoad(fs.readFileSync(nabsFile, 'utf8'));
 
@@ -240,19 +217,14 @@ program
   .parse(process.argv);
 
 log.level = logLevels[program.verbose || 0];
+log.info('Starting nabs v%s', version);
 
-if (!module.parent) {
-  // we've been run directly
-  log.info('Starting nabs v%s', version);
-
-  try {
-    nabs.main(program);
-  } catch (e) {
-    log.error(e.message);
-    log.debug(e);
-    process.exit(1);
-  }
-} else {
-  // we've been imported - just expose the machinery
-  module.exports = nabs;
+try {
+  nabs.main(program);
+} catch (e) {
+  log.error(e.message);
+  log.debug(e);
+  process.exit(1);
 }
+
+export default nabs;

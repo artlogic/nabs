@@ -17,12 +17,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this nabs.  If not, see <http://www.gnu.org/licenses/>.
 
-'use strict';
-
 const chai = require('chai');
 const td = require('testdouble');
 
-const nabs = require('../');
+const nabs = require('../dist').default;
 
 chai.should();
 

@@ -4,9 +4,14 @@
   "description": "Not Another Build System - compiles YAML to scripts in package.json",
   "main": "index.js",
   "scripts": {
+    "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.production.js --production",
+    "dev": "cross-env NODE_ENV=development webpack --config webpack/webpack.development.js --watch",
+    "prepare": "npm run build",
+    "start": "node dist/nabs.js",
     "test": "npm run test:lint && npm run test:unit",
     "test:lint": "eslint .",
     "test:unit": "mocha",
+    "watch": "nodemon dist/nabs.js",
     "nabs": "nabs"
   },
   "repository": {
@@ -34,12 +39,21 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
+    "cross-env": "^6.0.3",
     "eslint": "^6.5.1",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
     "mocha": "^6.2.0",
-    "testdouble": "^3.12.2"
+    "nodemon": "^1.19.4",
+    "testdouble": "^3.12.2",
+    "webpack-cli": "^3.3.9",
+    "webpack": "^4.41.2",
+    "webpack-merge": "^4.2.2",
+    "webpack-node-externals": "^1.7.2"
   },
   "engines": {
     "node": ">=10"
