@@ -216,7 +216,7 @@ nabs.main = function main(options) {
 
   pkg.scripts = nabs.process(tasks);
 
-  if (!options.disable) {
+  if (!options.disable && !pkg.scripts.nabs) {
     pkg.scripts.nabs = 'nabs';
   }
 
