@@ -1,17 +1,17 @@
 module.exports = {
-  "extends": "airbnb-base",
-  "plugins": [
-    "import"
+  extends: 'airbnb-base',
+  plugins: [
+    'import',
   ],
-  "rules": {
-    "strict": [
+  rules: {
+    strict: [
       2,
-      "safe"
+      'safe',
     ],
-    "import/no-extraneous-dependencies": [
-      "error", {
-        "devDependencies": ["**/webpack.*.js"]
-      }
+    'import/no-extraneous-dependencies': [
+      'error', {
+        devDependencies: ['**/webpack.*.js'],
+      },
     ],
-  }
-}
+  },
+};
