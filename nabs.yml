@@ -1,8 +1,14 @@
+build:
+  $depend: [:prod]
+  dev: webpack --config webpack/webpack.development.js --watch
+  prod: webpack --config webpack/webpack.production.js
+
+# override the default nabs command to use the development version
+nabs: node dist/index.js
+
 test:
   lint: eslint --ignore-pattern '!.eslintrc.js' .
   unit: mocha
 
-start: node dist/index.js
-watch: cross-env NODE_ENV=development webpack --config webpack/webpack.development.js --watch
-build: cross-env NODE_ENV=production webpack --config webpack/webpack.production.js --production
+# needed for npm package to build the dist folder
 prepare: npm run build
