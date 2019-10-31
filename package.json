@@ -4,14 +4,14 @@
   "description": "Not Another Build System - compiles YAML to scripts in package.json",
   "main": "dist/index.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.production.js --production",
+    "build": "npm run build:prod",
+    "build:dev": "webpack --config webpack/webpack.development.js --watch",
+    "build:prod": "webpack --config webpack/webpack.production.js",
+    "nabs": "node dist/index.js",
     "prepare": "npm run build",
-    "start": "node dist/index.js",
     "test": "npm run test:lint && npm run test:unit",
     "test:lint": "eslint --ignore-pattern '!.eslintrc.js' .",
-    "test:unit": "mocha",
-    "watch": "cross-env NODE_ENV=development webpack --config webpack/webpack.development.js --watch",
-    "nabs": "nabs"
+    "test:unit": "mocha"
   },
   "repository": {
     "type": "git",
@@ -38,11 +38,7 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.4",
-    "@babel/preset-env": "^7.6.3",
-    "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
-    "cross-env": "^6.0.3",
     "eslint": "^6.5.1",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
@@ -58,6 +54,5 @@
   },
   "bin": {
     "nabs": "./dist/index.js"
-  },
-  "preferGlobal": true
+  }
 }

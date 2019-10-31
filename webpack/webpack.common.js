@@ -4,7 +4,7 @@ const { readFileSync } = require('fs');
 const NodeExternals = require('webpack-node-externals');
 
 const dist = resolve('dist');
-const banner = readFileSync(resolve('webpack/file-header.txt')).toString().concat('\n');
+const banner = readFileSync(resolve('webpack/file-header.txt')).toString();
 
 module.exports = {
   target: 'node',
@@ -14,22 +14,11 @@ module.exports = {
   output: {
     filename: '[name].js',
     path: dist,
-    library: '',
     libraryTarget: 'commonjs',
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(js)$/,
-        loader: 'babel-loader',
-        exclude: [/node_modules/],
-      },
-    ],
   },
   plugins: [
     new webpack.BannerPlugin({
       banner,
-      raw: true,
     }),
     new webpack.BannerPlugin({
       banner: '#!/usr/bin/env node\n',
