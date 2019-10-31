@@ -1,6 +1,6 @@
 // nabs - Not another build system. Easy management of package.json scripts.
 //
-// Copyright (C) 2016 James Kruth
+// Copyright (C) 2019 James Kruth
 //
 // This file is part of nabs.
 //
