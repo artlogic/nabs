@@ -1,12 +1,12 @@
-'use strict';
 
 const fs = require('fs');
+const { resolve } = require('path');
 const jsonfile = require('jsonfile');
 const yaml = require('js-yaml');
-const log = require('./logger');
+const log = require('./logger').default;
 
 function main(options) {
-  const nabsFile = options.nabs || 'nabs.yml';
+  const nabsFile = options.nabs || resolve('nabs.yml');
   log.info('Opening %s...', nabsFile);
   const tasks = yaml.safeLoad(fs.readFileSync(nabsFile, 'utf8'));
 
@@ -16,7 +16,7 @@ function main(options) {
 
   pkg.scripts = process(tasks);
 
-  if (!options.disable) {
+  if (!options.disable && !pkg.scripts.nabs) {
     pkg.scripts.nabs = 'nabs';
   }
 
@@ -27,4 +27,4 @@ function main(options) {
   });
 }
 
-module.exports = main;
+export default main;

@@ -1,11 +1,11 @@
 module.exports = {
-  "env": {
-    "mocha": true
+  env: {
+    mocha: true,
   },
-  "rules": {
-    "import/no-extraneous-dependencies": [
-      "error",
-      { "devDependencies": true }
-    ]
-  }
+  rules: {
+    'import/no-extraneous-dependencies': [
+      'error',
+      { devDependencies: true },
+    ],
+  },
 };

@@ -1,6 +1,5 @@
-'use strict';
 
-const makeArray = require('./utils/makeArray');
+const makeArray = require('./utils/makeArray').default;
 
 class Task {
   constructor(name) {
@@ -82,4 +81,4 @@ class Task {
   }
 }
 
-module.exports = Task;
+export default Task;

@@ -1,5 +1,3 @@
-'use strict';
-
 // look for missing dependencies
 function checkDependencies(tasks, names) {
   const taskNames = new Set(names);
@@ -13,4 +11,4 @@ function checkDependencies(tasks, names) {
   });
 }
 
-module.exports = checkDependencies;
+export default checkDependencies;

@@ -1,5 +1,3 @@
-'use strict';
-
 const Task = require('../Task');
 
 // given a tasks object (from the YAML file), returns a list of Task objects
@@ -31,4 +29,4 @@ function buildTasks(tasks, name) {
   return scripts;
 }
 
-module.exports = buildTasks;
+export default buildTasks;

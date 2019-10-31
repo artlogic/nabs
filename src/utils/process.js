@@ -1,8 +1,7 @@
-'use strict';
 
-const buildTasks = require('./buildTasks');
-const checkDependencies = require('./checkDependencies');
-const log = require('../logger');
+const buildTasks = require('./buildTasks').default;
+const checkDependencies = require('./checkDependencies').default;
+const log = require('../logger').default;
 
 // processes tasks, returns scripts
 function process(tasks) {
@@ -25,4 +24,4 @@ function process(tasks) {
   return scripts;
 }
 
-module.exports = process;
+export default process;

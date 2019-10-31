@@ -17,10 +17,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this nabs.  If not, see <http://www.gnu.org/licenses/>.
 
-'use strict';
-
 const chai = require('chai');
-const nabs = require('../src');
+const nabs = require('../dist').default;
 
 const should = chai.should();
 

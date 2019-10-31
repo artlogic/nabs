@@ -1,4 +1,3 @@
-'use strict';
 
 const winston = require('winston');
 
@@ -13,4 +12,4 @@ const log = winston.createLogger({
 });
 
 
-module.exports = log;
+export default log;

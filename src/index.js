@@ -2,7 +2,7 @@
 
 // nabs - Not another build system. Easy management of package.json scripts.
 //
-// Copyright (C) 2016 James Kruth
+// Copyright (C) 2019 James Kruth
 //
 // This file is part of nabs.
 //
@@ -19,20 +19,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this nabs.  If not, see <http://www.gnu.org/licenses/>.
 
-'use strict';
 
 const fs = require('fs');
-const path = require('path');
+const { resolve } = require('path');
 const program = require('commander');
-const log = require('./logger');
-const Task = require('./Task');
-const buildTasks = require('./utils/buildTasks');
-const checkDependencies = require('./utils/checkDependencies');
-const makeArray = require('./utils/makeArray');
-const processTasks = require('./utils/process');
-const main = require('./main');
+const log = require('./logger').default;
+const Task = require('./Task').default;
+const buildTasks = require('./utils/buildTasks').default;
+const checkDependencies = require('./utils/checkDependencies').default;
+const makeArray = require('./utils/makeArray').default;
+const processTasks = require('./utils/process').default;
+const main = require('./main').default;
 
-const { version } = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8'));
+const { version } = JSON.parse(fs.readFileSync(resolve('package.json'), 'utf8'));
 
 const nabs = {};
 
@@ -59,19 +58,14 @@ program
   .parse(process.argv);
 
 log.level = logLevels[program.verbose || 0];
+log.info('Starting nabs v%s', version);
 
-if (!module.parent) {
-  // we've been run directly
-  log.info('Starting nabs v%s', version);
-
-  try {
-    nabs.main(program);
-  } catch (e) {
-    log.error(e.message);
-    log.debug(e);
-    process.exit(1);
-  }
-} else {
-  // we've been imported - just expose the machinery
-  module.exports = nabs;
+try {
+  nabs.main(program);
+} catch (e) {
+  log.error(e.message);
+  log.debug(e);
+  process.exit(1);
 }
+
+export default nabs;

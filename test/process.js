@@ -17,24 +17,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this nabs.  If not, see <http://www.gnu.org/licenses/>.
 
-'use strict';
-
 const chai = require('chai');
 const td = require('testdouble');
 
-const Task = require('../src/Task');
+const nabs = require('../dist').default;
 
 chai.should();
 
-let checkDependencies;
-let buildTasks;
-let process;
 describe('process', () => {
   beforeEach(() => {
-    buildTasks = td.replace('../src/utils/buildTasks');
-    checkDependencies = td.replace('../src/utils/checkDependencies');
-    // eslint-disable-next-line global-require
-    process = require('../src/utils/process');
+    nabs.buildTasks = td.function('buildTasks');
+    nabs.checkDependencies = td.function('checkDependdencies');
   });
 
   afterEach(() => {
@@ -44,17 +37,17 @@ describe('process', () => {
   it('should process the tasks properly', () => {
     const name = 'test';
     const action = 'my action';
-    const task = new Task([name]);
+    const task = new nabs.Task([name]);
 
     task.addAction(action);
 
-    td.when(buildTasks(td.matchers.anything(), td.matchers.isA(Array)))
+    td.when(nabs.buildTasks(td.matchers.anything(), td.matchers.isA(Array)))
       .thenReturn([task]);
 
-    const scripts = process({ [name]: action });
+    const scripts = nabs.process({ [name]: action });
     scripts.should.have.property(name);
     scripts[name].should.equal(action);
 
-    td.verify(checkDependencies([task], ['test']));
+    td.verify(nabs.checkDependencies([task], ['test']));
   });
 });
