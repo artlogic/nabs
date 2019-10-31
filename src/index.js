@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 // nabs - Not another build system. Easy management of package.json scripts.
 //
 // Copyright (C) 2019 James Kruth
@@ -23,13 +21,13 @@
 const fs = require('fs');
 const { resolve } = require('path');
 const program = require('commander');
-const log = require('./logger').default;
-const Task = require('./Task').default;
-const buildTasks = require('./utils/buildTasks').default;
-const checkDependencies = require('./utils/checkDependencies').default;
-const makeArray = require('./utils/makeArray').default;
-const processTasks = require('./utils/process').default;
-const main = require('./main').default;
+const log = require('./logger');
+const Task = require('./Task');
+const buildTasks = require('./utils/buildTasks');
+const checkDependencies = require('./utils/checkDependencies');
+const makeArray = require('./utils/makeArray');
+const processTasks = require('./utils/process');
+const main = require('./main');
 
 const { version } = JSON.parse(fs.readFileSync(resolve('package.json'), 'utf8'));
 
@@ -68,4 +66,4 @@ try {
   process.exit(1);
 }
 
-export default nabs;
+module.exports = nabs;

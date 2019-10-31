@@ -1,5 +1,5 @@
 
-const makeArray = require('./utils/makeArray').default;
+const makeArray = require('./utils/makeArray');
 
 class Task {
   constructor(name) {
@@ -81,4 +81,4 @@ class Task {
   }
 }
 
-export default Task;
+module.exports = Task;

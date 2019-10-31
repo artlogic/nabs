@@ -11,4 +11,4 @@ function checkDependencies(tasks, names) {
   });
 }
 
-export default checkDependencies;
+module.exports = checkDependencies;

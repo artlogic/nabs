@@ -1,10 +1,10 @@
 
-const buildTasks = require('./buildTasks').default;
-const checkDependencies = require('./checkDependencies').default;
-const log = require('../logger').default;
+const buildTasks = require('./buildTasks');
+const checkDependencies = require('./checkDependencies');
+const log = require('../logger');
 
 // processes tasks, returns scripts
-function process(tasks) {
+function processTasks(tasks) {
   const scripts = {};
   let taskList = [];
 
@@ -24,4 +24,4 @@ function process(tasks) {
   return scripts;
 }
 
-export default process;
+module.exports = processTasks;

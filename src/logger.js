@@ -12,4 +12,4 @@ const log = winston.createLogger({
 });
 
 
-export default log;
+module.exports = log;

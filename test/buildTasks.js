@@ -18,7 +18,7 @@
 // along with this   If not, see <http://www.gnu.org/licenses/>.
 
 const chai = require('chai');
-const nabs = require('../dist').default;
+const nabs = require('../src');
 
 chai.should();
 
@@ -111,5 +111,5 @@ describe('nabs.buildTasks', () => {
     scripts[0].children[1].should.equal('test:sub2');
   });
 
-  it('should call itself recursively for each key');
+  it('should call itself recursively for each key', () => {});
 });

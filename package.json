@@ -2,7 +2,7 @@
   "name": "nabs",
   "version": "0.4.0",
   "description": "Not Another Build System - compiles YAML to scripts in package.json",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.production.js --production",
     "prepare": "npm run build",
@@ -57,7 +57,7 @@
     "node": ">=10"
   },
   "bin": {
-    "nabs": "./src/index.js"
+    "nabs": "./dist/index.js"
   },
   "preferGlobal": true
 }

@@ -19,7 +19,7 @@
 
 const chai = require('chai');
 const td = require('testdouble');
-const nabs = require('../dist').default;
+const nabs = require('../src');
 
 chai.should();
 

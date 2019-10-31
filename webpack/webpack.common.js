@@ -9,7 +9,7 @@ const banner = readFileSync(resolve('webpack/file-header.txt')).toString().conca
 module.exports = {
   target: 'node',
   entry: {
-    index: resolve('index.js'),
+    index: resolve('src/index.js'),
   },
   output: {
     filename: '[name].js',

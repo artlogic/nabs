@@ -16,4 +16,4 @@ function makeArray(item) {
   throw new Error(`Item must be string, array or null: ${item}`);
 }
 
-export default makeArray;
+module.exports = makeArray;

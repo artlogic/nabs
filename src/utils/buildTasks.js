@@ -29,4 +29,4 @@ function buildTasks(tasks, name) {
   return scripts;
 }
 
-export default buildTasks;
+module.exports = buildTasks;
