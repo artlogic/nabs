@@ -34,7 +34,7 @@
   "dependencies": {
     "commander": "^2.20.0",
     "js-yaml": "^3.13.1",
-    "jsonfile": "^5.0.0",
+    "jsonfile": "^6.0.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {
