@@ -1,6 +1,6 @@
 // nabs - Not another build system. Easy management of package.json scripts.
 //
-// Copyright (C) 2016 James Kruth
+// Copyright (C) 2019 James Kruth
 //
 // This file is part of nabs.
 //
@@ -18,11 +18,11 @@
 // along with this nabs.  If not, see <http://www.gnu.org/licenses/>.
 
 const chai = require('chai');
-const nabs = require('../dist').default;
+const nabs = require('../src');
 
 chai.should();
 
-describe('buildTasks', () => {
+describe('nabs.buildTasks', () => {
   it('should return a single task if tasks is string/array', () => {
     const name = [];
     let scripts;
@@ -111,5 +111,5 @@ describe('buildTasks', () => {
     scripts[0].children[1].should.equal('test:sub2');
   });
 
-  it('should call itself recursively for each key');
+  it('should call itself recursively for each key', () => {});
 });

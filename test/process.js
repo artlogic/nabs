@@ -1,6 +1,6 @@
 // nabs - Not another build system. Easy management of package.json scripts.
 //
-// Copyright (C) 2016 James Kruth
+// Copyright (C) 2019 James Kruth
 //
 // This file is part of nabs.
 //
@@ -20,14 +20,19 @@
 const chai = require('chai');
 const td = require('testdouble');
 
-const nabs = require('../dist').default;
+const Task = require('../src/Task');
 
 chai.should();
 
+let checkDependencies;
+let buildTasks;
+let process;
 describe('process', () => {
   beforeEach(() => {
-    nabs.buildTasks = td.function('buildTasks');
-    nabs.checkDependencies = td.function('checkDependdencies');
+    buildTasks = td.replace('../src/utils/buildTasks');
+    checkDependencies = td.replace('../src/utils/checkDependencies');
+    // eslint-disable-next-line global-require
+    process = require('../src/utils/process');
   });
 
   afterEach(() => {
@@ -37,17 +42,17 @@ describe('process', () => {
   it('should process the tasks properly', () => {
     const name = 'test';
     const action = 'my action';
-    const task = new nabs.Task([name]);
+    const task = new Task([name]);
 
     task.addAction(action);
 
-    td.when(nabs.buildTasks(td.matchers.anything(), td.matchers.isA(Array)))
+    td.when(buildTasks(td.matchers.anything(), td.matchers.isA(Array)))
       .thenReturn([task]);
 
-    const scripts = nabs.process({ [name]: action });
+    const scripts = process({ [name]: action });
     scripts.should.have.property(name);
     scripts[name].should.equal(action);
 
-    td.verify(nabs.checkDependencies([task], ['test']));
+    td.verify(checkDependencies([task], ['test']));
   });
 });
